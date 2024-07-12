@@ -1,0 +1,30 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Sermon {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  title       String?
+  description String?
+  date        DateTime?
+  videoUrl    String?
+  speaker     Speaker?  @relation(fields: [speakerId], references: [id])
+  speakerId   String?
+}
+
+model Speaker {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sermons   Sermon[]
+  bio       String?
+  imageUrl  String?
+  name      String?
+}
